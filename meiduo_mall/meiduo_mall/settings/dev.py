@@ -108,14 +108,14 @@ DATABASES = {
 
 # config redis cache
 CACHES = {
-    "default": { # default db 0
+    "default": {  # default db 0
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-    "session": { # session store to db 1
+    "session": {  # session store to db 1
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
@@ -202,7 +202,8 @@ LOGGING = {
         'file': {  # export to external files
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(os.path.dirname(BASE_DIR), 'logs/meiduo0.log'),  # logs file path
+            # logs file path
+            'filename': os.path.join(os.path.dirname(BASE_DIR), 'logs/meiduo0.log'),
             'maxBytes': 300 * 1024 * 1024,
             'backupCount': 10,
             'formatter': 'verbose'
