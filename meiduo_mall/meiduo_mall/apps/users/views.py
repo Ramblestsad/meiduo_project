@@ -14,10 +14,12 @@ class RegisterView(View):
 
     def get(self, request):
 
-        '''
-        description:
-        param {*}
-        return {*}
-        '''
+        """display register.html"""
 
         return render(request, 'register.html')
+
+    def post(self, request):
+
+        """register"""
+
+        pass

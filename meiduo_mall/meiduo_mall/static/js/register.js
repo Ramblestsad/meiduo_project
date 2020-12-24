@@ -1,4 +1,4 @@
-// 我们采用的时ES6的语法
+// 我们采用的s是ES6的语法
 // 创建Vue对象 vm
 let vm = new Vue({
     el: '#app', // 通过ID选择器找到绑定的HTML内容
@@ -83,7 +83,7 @@ let vm = new Vue({
             this.check_allow();
 
             // 在校验之后，注册数据中，只要有错误，就禁用掉表单的提交事件
-            if (this.error_name == true || this.error_password == true || this.error_password2 == true || this.mobile == true || this.allow == true) {
+            if (this.error_name == true || this.error_password == true || this.error_password2 == true || this.error_mobile == true || this.error_allow == true) {
                 // 禁用掉表单的提交事件
                 window.event.returnValue = false;
             }
