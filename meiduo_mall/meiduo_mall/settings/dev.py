@@ -12,7 +12,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
-import os, sys
+import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -43,7 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # 'meiduo_mall.apps.users'  # app [users]
-    'users'
+    'users',
+    # index advertisement
+    'contents',
 ]
 
 MIDDLEWARE = [
@@ -90,9 +93,7 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'meiduo_mall.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -157,7 +158,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -170,7 +170,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -216,7 +215,8 @@ LOGGING = {
     },
     'loggers': {  # loggers
         'django': {  # loggers named django
-            'handlers': ['console', 'file'],  # export log to both terminal and external files
+            # export log to both terminal and external files
+            'handlers': ['console', 'file'],
             'propagate': True,  # whether successively propagate logs
             'level': 'INFO',  # lowest level of logs
         },

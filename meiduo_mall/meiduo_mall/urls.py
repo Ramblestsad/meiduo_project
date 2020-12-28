@@ -22,4 +22,6 @@ urlpatterns = [
 
     # users
     re_path(r'^', include(('users.urls', 'users'), namespace='users')),
+    # index
+    re_path(r'^', include(('contents.urls', 'contents'), namespace='contents'))
 ]
