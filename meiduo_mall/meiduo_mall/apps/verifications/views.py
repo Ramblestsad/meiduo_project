@@ -3,6 +3,7 @@ from django.views import View
 from verifications.libs.captcha.captcha import captcha
 from django_redis import get_redis_connection
 from django import http
+from . import constants
 
 
 # Create your views here.
@@ -27,7 +28,7 @@ class ImageCodeView(View):
 
         # 保存
         redis_conn = get_redis_connection('verify_code')  # 连接redis别名为 verify_code的2号库
-        redis_conn.setex('img_%s' % uuid, 300, text)
+        redis_conn.setex('img_%s' % uuid, constants.IMAGE_CODE_REDIS_EXPIRES, text)
 
         # 响应
         return http.HttpResponse(image, content_type='image/jpg')
