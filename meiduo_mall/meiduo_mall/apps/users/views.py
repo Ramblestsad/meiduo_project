@@ -19,8 +19,8 @@ class UsernameCountView(View):
     def get(self, request, username):
         """
         description: axios
-        :param {request: 请求对象, username: 用户名}
-        :return: JSON
+        param {request: 请求对象, username: 用户名}
+        return: {JSON}
         """
 
         # 接收和校验参数, 通过urls路径参数实现
@@ -38,8 +38,8 @@ class MobileCountView(View):
     def get(self, request, mobile):
         """
         description: axios
-        :param {request: 请求对象, username: 用户名}
-        :return: JSON
+        param {request: 请求对象, username: 用户名}
+        return: JSON
         """
 
         count = User.objects.filter(mobile=mobile).count()

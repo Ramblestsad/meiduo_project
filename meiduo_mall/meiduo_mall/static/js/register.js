@@ -11,6 +11,8 @@ let vm = new Vue({
         password2: '',
         mobile: '',
         allow: '',
+        image_code_url: '',
+        uuid: '',
 
         // v-show
         error_name: false,
@@ -23,7 +25,16 @@ let vm = new Vue({
         error_name_message: '',
         error_mobile_message: '',
     },
+    mounted() {  // 页面加载后的行为
+        // 生成图形验证码
+        this.generate_image_code();
+    },
     methods: { // 定义和实现事件方法
+        // 生成图形验证码: 封装思想，方便代码复用
+        generate_image_code() {
+            this.uuid = generateUUID();
+            this.image_code_url = '/image_codes/' + this.uuid + '/';
+        },
         // 校验用户名
         check_username() {
             // 用户名是5-20个字符，[a-zA-Z0-9_-]

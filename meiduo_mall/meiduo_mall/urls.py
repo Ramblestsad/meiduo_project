@@ -23,5 +23,7 @@ urlpatterns = [
     # users
     re_path(r'^', include(('users.urls', 'users'), namespace='users')),
     # index
-    re_path(r'^', include(('contents.urls', 'contents'), namespace='contents'))
+    re_path(r'^', include(('contents.urls', 'contents'), namespace='contents')),
+    # verificaitons
+    re_path(r'^', include(('verifications.urls', 'verifications'), namespace='verifications')),
 ]
