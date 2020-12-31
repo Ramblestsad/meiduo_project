@@ -1,13 +1,14 @@
 from django.http.response import JsonResponse
 from django.urls import reverse
-from users.models import User
 from django import http
 from django.shortcuts import render, redirect
 from django.views import View
 import re
 from django.db import DatabaseError
 from django.contrib.auth import login
+
 from meiduo_mall.utils.response_code import RETCODE
+from users.models import User
 
 
 # Create your views here.
@@ -17,10 +18,14 @@ class UsernameCountView(View):
     """判断用户名是否重复注册"""
 
     def get(self, request, username):
-        """
-        description: axios
-        param {request: 请求对象, username: 用户名}
-        return: {JSON}
+        """axios
+
+        Args:
+            request ([obj]): 请求对象
+            username ([str]): 用户名
+
+        Returns:
+            [type]: JSON
         """
 
         # 接收和校验参数, 通过urls路径参数实现
@@ -36,10 +41,14 @@ class MobileCountView(View):
     """判断手机号是否重复注册"""
 
     def get(self, request, mobile):
-        """
-        description: axios
-        param {request: 请求对象, username: 用户名}
-        return: JSON
+        """axios
+
+        Args:
+            request ([obj]): 请求对象
+            mobile ([str]): 手机号
+
+        Returns:
+            [json]: JSON
         """
 
         count = User.objects.filter(mobile=mobile).count()

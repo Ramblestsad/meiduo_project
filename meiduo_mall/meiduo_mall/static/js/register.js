@@ -14,6 +14,10 @@ let vm = new Vue({
         image_code_url: '',
         uuid: '',
         image_code: '',
+        sms_code: '',
+
+        sms_code_tip: '获取短信验证码',
+        send_flag: false,
 
         // v-show
         error_name: false,
@@ -22,11 +26,13 @@ let vm = new Vue({
         error_mobile: false,
         error_allow: false,
         error_image_code: false,
+        error_sms_code: false,
 
         // error_message
         error_name_message: '',
         error_mobile_message: '',
         error_image_code_msg: '',
+        error_sms_code_msg: '',
 
     },
     mounted() {  // 页面加载后的行为
@@ -39,6 +45,56 @@ let vm = new Vue({
             this.uuid = generateUUID();
             this.image_code_url = '/image_codes/' + this.uuid + '/';
         },
+
+        // 发送短信验证码
+        send_sms_code() {
+            // 避免恶意用户频繁点击获取短信验证码的标签
+            if (this.send_flag = true) {
+                return;
+            }
+            this.send_flag = true;
+            // 校验数据：mobile, image_code
+            this.check_mobile();
+            this.check_image_code();
+            if (this.error_mobile == true || this.error_image_code == true) {
+                return;
+            }
+
+            url = 'sms_codes/' + this.mobile + '/?image_code=' + this.image_code + '&uuid=' + this.uuid;
+            axios.get(url, {
+                responseType: 'json'
+            })
+                .then(response => {
+                    if (response.data.code == '0') {
+                        // 展示倒计时60s
+                        let num = 60;
+                        let t = setInterval(() => {
+                            if (num == 1) {  // 倒计时结束
+                                clearInterval(t);  // 停止回调函数执行
+                                // 还原sms_code_tip
+                                this.sms_code_tip = "获取短信验证码";
+                                // 重新生成image_code
+                                this.generate_image_code();
+                                this.send_flag = false;
+                            } else {  // 正在倒计时
+                                num -= 1;
+                                this.sms_code_tip = num + "秒";
+                            }
+                        }, 1000)
+                    } else {  // imaga_code失效/错误
+                        if (response.data.code == '4001') {  // image_code 错误
+                            this.error_image_code_msg = response.data.errmsg;
+                            this.error_image_code = true;
+                        }
+                        this.send_flag = false;
+                    }
+                })
+                .catch(error => {
+                    console.log(error.response);
+                    this.send_flag = false;
+                })
+        },
+
         // 校验用户名
         check_username() {
             // 用户名是5-20个字符，[a-zA-Z0-9_-]
@@ -128,6 +184,15 @@ let vm = new Vue({
                 this.error_image_code = true;
             } else {
                 this.error_image_code = false;
+            }
+        },
+        // 校验短信验证码
+        check_sms_code() {
+            if (this.sms_code.length != 6) {
+                this.error_sms_code_msg = '请输入6位短信验证码';
+                this.error_sms_code = true;
+            } else {
+                this.error_sms_code = false;
             }
         },
         // 校验是否勾选协议
