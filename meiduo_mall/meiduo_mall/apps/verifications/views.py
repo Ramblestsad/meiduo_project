@@ -61,8 +61,9 @@ class SMSCodeView(View):
         redis_conn.setex("sms_%s" % mobile, constants.SMS_CODE_REDIS_EXPIRES, sms_code)
 
         # 发送SMS code
-        CCP().send_template_sms(mobile, [sms_code, constants.SMS_CODE_REDIS_EXPIRES // 60],
-                                constants.SEND_SMS_TEMPLATE_ID)
+        # CCP().send_template_sms(mobile, [sms_code, constants.SMS_CODE_REDIS_EXPIRES // 60],
+        #                         constants.SEND_SMS_TEMPLATE_ID)
+        # 容联云通讯目前有bug
 
         # 响应结果
         return http.JsonResponse({"code": RETCODE.OK, "errmsg": "发送短信成功"})
