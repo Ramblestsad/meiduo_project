@@ -81,7 +81,7 @@ class SMSCodeView(View):
         # 容联云通讯目前有bug
 
         # Celery异步发送短信
-        send_sms_code.delay(mobile, sms_code)  # 一定一定一定要.delay
+        # send_sms_code.delay(mobile, sms_code)  # 一定一定一定要.delay
 
         # 响应结果
         return http.JsonResponse({"code": RETCODE.OK, "errmsg": "发送短信成功"})
