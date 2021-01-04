@@ -6,6 +6,7 @@ from django.views import View
 import re
 from django.db import DatabaseError
 from django.contrib.auth import login
+from django_redis import get_redis_connection
 
 from meiduo_mall.utils.response_code import RETCODE
 from users.models import User
@@ -70,11 +71,12 @@ class RegisterView(View):
         password = request.POST.get('password')
         password2 = request.POST.get('password2')
         mobile = request.POST.get('mobile')
+        # sms_code_client = request.POST.get('sms_code')
         allow = request.POST.get('allow')
 
         # 校验参数: 前后端校验分开，避免恶意用户越过前端逻辑发请求，保证服务器安全，前后端校验逻辑相同
         # 判断参数是否齐全
-        if not all([username, password, password2, mobile, allow]):
+        if not all([username, password, password2, mobile, allow,]):
             return http.HttpResponseForbidden('缺少必须参数')
 
         # 1. 判断用户名是否是5-20个字符
@@ -93,7 +95,16 @@ class RegisterView(View):
         if not re.match(r'^1[3-9]\d{9}$', mobile):
             return http.HttpResponseForbidden('无效手机号码')
 
-        # 5. 判断是否勾选用户协议
+        # # 5. 判断短信验证码是否正确
+        # redis_conn = get_redis_connection('verify_code')
+        # sms_code_server = redis_conn.get('sms_%s' % mobile)
+
+        # if sms_code_server is None:
+        #     return render(request, 'register.html', {'sms_code_errmsg': '短信验证码已失效'})
+        # if sms_code_client != sms_code_server.decode():
+        #     return render(request, 'register.html', {'sms_code_errmsg': '输入短信验证码有误'})
+
+        # 6. 判断是否勾选用户协议
         if allow != 'on':
             return http.HttpResponseForbidden('请勾选用户协议')
 
