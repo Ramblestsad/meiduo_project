@@ -15,6 +15,20 @@ from users.models import User
 # Create your views here.
 
 
+class LoginView(View):
+    """用户登录"""
+
+    def get(self, request):
+        """提供用户登录界面"""
+
+        return render(request, 'login.html')
+
+    def post(self, request):
+        """实现用户登录逻辑"""
+
+        pass
+
+
 class UsernameCountView(View):
     """判断用户名是否重复注册"""
 
