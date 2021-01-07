@@ -16,13 +16,21 @@ from users.models import User
 # Create your views here.
 
 
-class UserInfoView(View):
+class UserInfoView(LoginRequiredMixin , View):
     """用户中心"""
 
     def get(self, request):
         """展示用户中心页面"""
 
-        return render(request, "user_center_info.html")
+        # if request.user.is_authenticated():
+        #     return render(request, 'user_center_info.html')
+        # else:
+        #     return redirect(reverse('users:login'))
+
+        # login_url = '/login/' 不用传，在dev settings文件中定义了默认值
+        # redirect_field_name = '' 不用传， REDIRECT_FIELD_NAME='next' 为默认值
+
+        return render(request, 'user_center_info.html')
 
 
 class LogoutView(View):
@@ -85,7 +93,14 @@ class LoginView(View):
             request.session.set_expiry(None)
 
         # 响应结果
-        response = redirect(reverse('contents:index'))
+        # 先取出next
+        nt = request.GET.get('next')
+        if nt:
+            # 重定向到nt
+            response = redirect(nt)
+        else:
+            # 重定向到首页
+            response = redirect(reverse('contents:index'))
 
         # 首页右上角展示用户名信息：缓存用户名到cookie中
         response.set_cookie("username", user.username, max_age=3600 * 24 * 14)
