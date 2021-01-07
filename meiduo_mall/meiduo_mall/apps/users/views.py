@@ -57,7 +57,13 @@ class LoginView(View):
             request.session.set_expiry(None)
 
         # 响应结果
-        return redirect(reverse('contents:index'))
+        response = redirect(reverse('contents:index'))
+
+        # 首页右上角展示用户名信息：缓存用户名到cookie中
+        response.set_cookie("username", user.username, max_age=3600 * 24 * 14)
+
+        # 响应结果
+        return response
 
 
 class UsernameCountView(View):
@@ -163,5 +169,10 @@ class RegisterView(View):
         login(request, user)
 
         # 响应结果 redirect --> index.html
-        # return http.HttpResponse('注册成功，重定向到首页...')
-        return redirect(reverse('contents:index'))
+        response = redirect(reverse('contents:index'))
+
+        # 首页右上角展示用户名信息：缓存用户名到cookie中
+        response.set_cookie("username", user.username, max_age=3600 * 24 * 14)
+
+        # 响应结果
+        return response
