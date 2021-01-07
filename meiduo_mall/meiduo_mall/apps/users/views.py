@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 import re
 from django.db import DatabaseError
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django_redis import get_redis_connection
 
 from meiduo_mall.utils.response_code import RETCODE
@@ -13,6 +13,24 @@ from users.models import User
 
 
 # Create your views here.
+
+
+class LogoutView(View):
+    """用户退出登录"""
+
+    def get(self, request):
+        """退出登录逻辑"""
+
+        # 清理session
+        logout(request)
+
+        # 退出登录，重定向到登录页
+        response = redirect(reverse('contents:index'))
+
+        # 退出登录时清除cookie中的username
+        response.delete_cookie('username')
+
+        return response
 
 
 class LoginView(View):

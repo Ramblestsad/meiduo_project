@@ -5,7 +5,7 @@
 '''
 Author: Chris W.
 Date: 2020-12-23 17:15:15
-LastEditTime: 2020-12-28 21:45:05
+LastEditTime: 2021-01-07 17:31:59
 LastEditors: Chris W.
 Description: None
 Version: 1.0
@@ -28,4 +28,6 @@ urlpatterns = [
             name='mcount'),
     # 用户登录
     re_path(r'^login/$', views.LoginView.as_view(), name='login'),
+    # 用户退出登录
+    re_path(r'^logout/$', views.LogoutView.as_view(), name='logout'),
 ]
