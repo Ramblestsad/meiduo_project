@@ -6,6 +6,7 @@ from django.views import View
 import re
 from django.db import DatabaseError
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django_redis import get_redis_connection
 
 from meiduo_mall.utils.response_code import RETCODE
@@ -13,6 +14,15 @@ from users.models import User
 
 
 # Create your views here.
+
+
+class UserInfoView(View):
+    """用户中心"""
+
+    def get(self, request):
+        """展示用户中心页面"""
+
+        return render(request, "user_center_info.html")
 
 
 class LogoutView(View):
