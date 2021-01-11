@@ -16,7 +16,7 @@ from users.models import User
 # Create your views here.
 
 
-class UserInfoView(LoginRequiredMixin , View):
+class UserInfoView(LoginRequiredMixin, View):
     """用户中心"""
 
     def get(self, request):
@@ -170,7 +170,7 @@ class RegisterView(View):
 
         # 校验参数: 前后端校验分开，避免恶意用户越过前端逻辑发请求，保证服务器安全，前后端校验逻辑相同
         # 判断参数是否齐全
-        if not all([username, password, password2, mobile, allow,]):
+        if not all([username, password, password2, mobile, allow, ]):
             return http.HttpResponseForbidden('缺少必须参数')
 
         # 1. 判断用户名是否是5-20个字符
@@ -204,7 +204,8 @@ class RegisterView(View):
 
         # 保存注册数据 --> MySQL
         try:
-            user = User.objects.create_user(username=username, password=password, mobile=mobile)
+            user = User.objects.create_user(
+                username=username, password=password, mobile=mobile)
         except DatabaseError:
             return render(request, 'register.html', {'register_errmsg': '注册失败'})
 
