@@ -47,6 +47,10 @@ INSTALLED_APPS = [
     'users',
     # index advertisement
     'contents',
+    # verifications
+    'verifications',
+    # OAuth
+    'oauth',
 ]
 
 MIDDLEWARE = [
