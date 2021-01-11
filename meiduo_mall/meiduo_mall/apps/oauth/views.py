@@ -13,6 +13,8 @@ from meiduo_mall.utils.response_code import RETCODE
 
 # 创建日志输出器
 logger = logging.getLogger('django')
+
+
 class QQAuthURLView(View):
     """提供QQ登录扫码页面"""
 
@@ -28,7 +30,6 @@ class QQAuthURLView(View):
         login_url = oauth.get_qq_url()
 
         return http.JsonResponse({'code': RETCODE.OK, "errmsg": 'OK', "login_url": login_url})
-
 
 
 class QQAuthUserView(View):
