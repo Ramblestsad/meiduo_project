@@ -32,6 +32,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'www.meiduo.site',
+    '127.0.0.1',
 ]  # type: list
 
 

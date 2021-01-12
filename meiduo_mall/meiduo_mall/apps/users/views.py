@@ -94,10 +94,10 @@ class LoginView(View):
 
         # 响应结果
         # 先取出next
-        nt = request.GET.get('next')
-        if nt:
+        _next = request.GET.get('next')
+        if _next:
             # 重定向到nt
-            response = redirect(nt)
+            response = redirect(_next)
         else:
             # 重定向到首页
             response = redirect(reverse('contents:index'))
