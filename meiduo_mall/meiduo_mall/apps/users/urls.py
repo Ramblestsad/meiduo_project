@@ -5,7 +5,7 @@
 '''
 Author: Chris W.
 Date: 2020-12-23 17:15:15
-LastEditTime: 2021-01-15 14:41:55
+LastEditTime: 2021-01-15 17:14:53
 LastEditors: Chris W.
 Description: None
 Version: 1.0
@@ -34,4 +34,6 @@ urlpatterns = [
     re_path(r'^info/$', views.UserInfoView.as_view(), name='info'),
     # 添加邮箱
     re_path(r'^emails/$', views.EmailView.as_view()),
+    # 验证邮箱
+    re_path(r'^emails/verification/$', views.VerifyEmailView.as_view()),
 ]
