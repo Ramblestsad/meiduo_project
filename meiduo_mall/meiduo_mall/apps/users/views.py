@@ -3,7 +3,7 @@ from django.urls import reverse
 from django import http
 from django.shortcuts import render, redirect
 from django.views import View
-import re
+import re, json, logging
 from django.db import DatabaseError
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -11,18 +11,43 @@ from django_redis import get_redis_connection
 
 from meiduo_mall.utils.response_code import RETCODE
 from users.models import User
+from meiduo_mall.utils.views import LoginRequiredJsonMixin
 
 
 # Create your views here.
 
 
-class EmailView(View):
+# 创建日志输出器
+logger = logging.getLogger('django')
+
+
+class EmailView(LoginRequiredJsonMixin, View):
     """添加邮箱"""
 
     def put(self, request):
         """添加邮箱后端逻辑"""
 
-        pass
+        # 接收参数
+        json_str = request.body.decode()  # body 类型是 byte
+        json_dict = json.loads(json_str)
+        email = json_dict.get('email')
+
+        # 校验参数
+        if not email:
+            return http.HttpResponseForbidden('缺少email参数')
+        if not re.match(r'^[a-z0-9][\w\.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$', email):
+            return http.HttpResponseForbidden('参数email有误')
+
+        # 将用户传入的email保存到用户数据库（users_user）的email字段中
+        try:
+            request.user.email = email
+            request.user.save()
+        except Exception as e:
+            logger.error(e)
+            return http.JsonResponse({'code': RETCODE.DBERR, 'errmsg': '添加邮箱失败'})
+
+        # 响应结果
+        return http.JsonResponse({'code': RETCODE.OK, 'errmsg': '添加邮箱成功'})
 
 
 class UserInfoView(LoginRequiredMixin, View):
