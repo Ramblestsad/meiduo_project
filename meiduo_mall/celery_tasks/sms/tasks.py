@@ -20,12 +20,19 @@ from celery_tasks.main import celery_app
 
 
 # 定义任务
-
-@celery_app.task(name='send_sms_code')
-def send_sms_code(mobile, sms_code):
+# bind: 保证task对象会作为第一个参数自动传入
+# name: 异步任务别名
+# retry_backoff: 异常自动重试时间间隔 第n次(retry_backoff * 2^(n-1))s
+# max_retries: 异常自动重试次数上限
+@celery_app.task(bind=True, name='send_sms_code', retry_backoff=3)
+def send_sms_code(self, mobile, sms_code):
     """发送SMS code的异步任务"""
 
-    send_ret = CCP().send_template_sms(mobile, [sms_code, constants.SMS_CODE_REDIS_EXPIRES // 60],
-                            constants.SEND_SMS_TEMPLATE_ID)
+    try:
+        send_ret = CCP().send_template_sms(mobile, [sms_code, constants.SMS_CODE_REDIS_EXPIRES // 60],
+                                constants.SEND_SMS_TEMPLATE_ID)
 
-    return send_ret
+        return send_ret
+    except Exception as e:
+        # 有异常自动重试3次
+        raise self.retry(exc=e, max_retries=3)
