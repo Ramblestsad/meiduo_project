@@ -30,7 +30,15 @@ class UserInfoView(LoginRequiredMixin, View):
         # login_url = '/login/' 不用传，在dev settings文件中定义了默认值
         # redirect_field_name = '' 不用传， REDIRECT_FIELD_NAME='next' 为默认值
 
-        return render(request, 'user_center_info.html')
+        # 若 LoginRequiredMixin 判断出用户已登录，则request.user就是登陆用户对象
+        context = {
+            'username': request.user.username,
+            'mobile': request.user.mobile,
+            'email': request.user.email,
+            'email_active': request.user.email_active,
+        }
+
+        return render(request, 'user_center_info.html', context)
 
 
 class LogoutView(View):
