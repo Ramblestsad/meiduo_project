@@ -16,6 +16,15 @@ from users.models import User
 # Create your views here.
 
 
+class EmailView(View):
+    """添加邮箱"""
+
+    def put(self, request):
+        """添加邮箱后端逻辑"""
+
+        pass
+
+
 class UserInfoView(LoginRequiredMixin, View):
     """用户中心"""
 

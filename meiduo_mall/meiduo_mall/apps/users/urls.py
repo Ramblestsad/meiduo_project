@@ -5,7 +5,7 @@
 '''
 Author: Chris W.
 Date: 2020-12-23 17:15:15
-LastEditTime: 2021-01-07 17:51:42
+LastEditTime: 2021-01-15 14:41:55
 LastEditors: Chris W.
 Description: None
 Version: 1.0
@@ -32,4 +32,6 @@ urlpatterns = [
     re_path(r'^logout/$', views.LogoutView.as_view(), name='logout'),
     # 用户中心
     re_path(r'^info/$', views.UserInfoView.as_view(), name='info'),
+    # 添加邮箱
+    re_path(r'^emails/$', views.EmailView.as_view()),
 ]
