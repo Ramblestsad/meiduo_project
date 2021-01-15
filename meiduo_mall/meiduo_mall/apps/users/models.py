@@ -8,6 +8,7 @@ class User(AbstractUser):
     """description: custom user model class"""
 
     mobile = models.CharField(max_length=11, unique=True, verbose_name='cellphone number')
+    email_active = models.BooleanField(default=False, verbose_name='邮箱验证状态')
 
     class meta:
 
