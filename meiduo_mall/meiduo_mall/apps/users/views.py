@@ -3,7 +3,9 @@ from django.urls import reverse
 from django import http
 from django.shortcuts import render, redirect
 from django.views import View
-import re, json, logging
+import re
+import json
+import logging
 from django.db import DatabaseError
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
