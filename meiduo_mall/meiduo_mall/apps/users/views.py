@@ -106,7 +106,36 @@ class AddressView(LoginRequiredMixin, View):
 
     def get(self, request):
 
-        return render(request, 'user_center_site.html')
+        # 获取当前登录用户对象
+        login_user = request.user
+
+        # 使用 login_user 和 is_deleted=False 作为条件查询
+        addresses = Address.objects.filter(user=login_user, is_deleted=False)
+
+        # 将用户地址模型列表转字典：因为 Vue.js 不认识 QuerySet模型列表，Jinja2、Django 模板引擎认识
+        address_list = []
+        for address in addresses:
+            address_dict = {
+                "id": address.id,
+                "title": address.title,
+                "receiver": address.receiver,
+                "province": address.province.name,
+                "city": address.city.name,
+                "district": address.district.name,
+                "place": address.place,
+                "mobile": address.mobile,
+                "tel": address.tel,
+                "email": address.email
+            }
+            address_list.append(address_dict)
+
+        # 构造 context
+        context = {
+            'default_address_id': login_user.default_address_id,
+            'addresses': address_list,
+        }
+
+        return render(request, 'user_center_site.html', context)
 
 
 class VerifyEmailView(View):
