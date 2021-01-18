@@ -33,7 +33,7 @@
 					<a href="user_center_order.html">我的订单</a>
 				</div>
 			</div>
-		</div>		
+		</div>
 	</div>
 	<div class="search_bar clearfix">
 		<a href="{{ url('contents:index') }}" class="logo fl"><img src="{{ static('images/logo.png') }}"></a>
@@ -48,7 +48,7 @@
 				<li><a href="#">美妆个护</a></li>
 				<li><a href="#">买2免1</a></li>
 			</ul>
-		</div>		
+		</div>
 	</div>
 	<div class="main_con clearfix">
 		<div class="left_menu_con clearfix">
@@ -69,7 +69,7 @@
 				<div class="site_title">
 					<h3>传智播客 北京</h3>
 					<a href="javascript:;" class="edit_icon"></a>
-					<em>默认地址</em>						
+					<em>默认地址</em>
 					<span class="del_site">×</span>
 				</div>
 				<ul class="site_list">
@@ -102,7 +102,7 @@
 					<a href="javascript:;" class="set_default">设为默认</a>
 					<a href="javascript:;" class="edit_icon">编辑</a>
 				</div>
-			</div>			
+			</div>
 		</div>
 	</div>
 	<div class="footer">
@@ -113,7 +113,7 @@
 			<span>|</span>
 			<a href="#">招聘人才</a>
 			<span>|</span>
-			<a href="#">友情链接</a>		
+			<a href="#">友情链接</a>
 		</div>
 		<p>CopyRight © 2016 北京美多商业股份有限公司 All Rights Reserved</p>
 		<p>电话：010-****888    京ICP备*******8号</p>
@@ -131,6 +131,19 @@
                     <input v-model="form_address.receiver" @blur="check_receiver" type="text" class="receiver">
                     <span v-show="error_receiver" class="receiver_error">请填写收件人</span>
                 </div>
+				<div class="form_group">
+					<label>*所在地区：</label>
+					<select v-model="form_address.province_id">
+						<option v-for="province in provinces" :value="province.id">[[ province.name ]]</option>
+					</select>
+					<select v-model="form_address.city_id">
+						<option v-for="city in cities" :value="city.id">[[ city.name ]]</option>
+					</select>
+					<select v-model="form_address.district_id">
+						<option v-for="district in districts" :value="district.id">[[ district.name ]]</option>
+					</select>
+				</div>
+				{#
                 <div class="form_group">
                     <label>*所在地区：</label>
                     <select v-model="form_address.province_id">
@@ -155,6 +168,7 @@
                         <option value="4">海淀区</option>
                     </select>
                 </div>
+				#}
                 <div class="form_group">
                     <label>*详细地址：</label>
                     <input v-model="form_address.place" @blur="check_place" type="text" class="place">
