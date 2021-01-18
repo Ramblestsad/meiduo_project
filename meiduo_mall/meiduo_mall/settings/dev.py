@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'verifications',
     # OAuth
     'oauth',
+    # areas: 省市区三级联动
+    'areas',
 ]
 
 MIDDLEWARE = [
