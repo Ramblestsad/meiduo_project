@@ -5,7 +5,7 @@
 '''
 Author: Chris W.
 Date: 2020-12-23 17:15:15
-LastEditTime: 2021-01-18 15:26:41
+LastEditTime: 2021-01-18 18:21:15
 LastEditors: Chris W.
 Description: None
 Version: 1.0
@@ -38,4 +38,6 @@ urlpatterns = [
     re_path(r'^emails/verification/$', views.VerifyEmailView.as_view()),
     # 收货地址页面
     re_path(r'^addresses/$', views.AddressView.as_view(), name='address'),
+    # 新增收货地址
+    re_path(r'^addresses/create/$', views.AddressCreateView.as_view()),
 ]
