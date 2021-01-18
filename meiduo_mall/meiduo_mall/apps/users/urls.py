@@ -5,7 +5,7 @@
 '''
 Author: Chris W.
 Date: 2020-12-23 17:15:15
-LastEditTime: 2021-01-18 21:06:03
+LastEditTime: 2021-01-18 21:14:17
 LastEditors: Chris W.
 Description: None
 Version: 1.0
@@ -46,4 +46,7 @@ urlpatterns = [
     # 设置默认地址
     re_path(r'^addresses/(?P<address_id>\d+)/default/$',
             views.DefaultAddressView.as_view()),
+    # 修改地址标题
+    re_path(r'^addresses/(?P<address_id>\d+)/title/$',
+            views.UpdateTitleAddressView.as_view()),
 ]
