@@ -1,29 +1,76 @@
-from django.http.response import JsonResponse
-from django.urls import reverse
-from django import http
-from django.shortcuts import render, redirect
-from django.views import View
-import re
 import json
 import logging
-from django.db import DatabaseError
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django_redis import get_redis_connection
+import re
 
-from meiduo_mall.utils.response_code import RETCODE
-from users.models import User, Address
-from meiduo_mall.utils.views import LoginRequiredJsonMixin
+from django.http import response
+
 from celery_tasks.email.tasks import send_verify_email
-from users.utils import generate_verify_url, check_verify_token
-from . import constants
+from django import http
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import DatabaseError
+from django.http.response import JsonResponse
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.views import View
+from django_redis import get_redis_connection
+from meiduo_mall.utils.response_code import RETCODE
+from meiduo_mall.utils.views import LoginRequiredJsonMixin
 
+from users.models import Address, User
+from users.utils import check_verify_token, generate_verify_url
+
+from . import constants
 
 # Create your views here.
 
 
 # 创建日志输出器
 logger = logging.getLogger('django')
+
+
+class ChangePwdView(LoginRequiredMixin, View):
+    """修改用户密码"""
+
+    def get(self, request):
+
+        return render(request, 'user_center_pass.html')
+
+    def post(self, request):
+
+        # 接收参数
+        old_pwd = request.POST.get('old_password')
+        new_pwd = request.POST.get('new_password')
+        new_pwd2 = request.POST.get('new_password2')
+
+        # 校验参数
+        if not all([old_pwd, new_pwd, new_pwd2]):
+            return http.HttpResponseForbidden('缺少必传参数')
+        try:
+            request.user.check_password(old_pwd)
+        except Exception as e:
+            logger.error(e)
+            return render(request, 'user_center_pass.html', {'origin_pwd_errmsg':'原始密码错误'})
+        if not re.match(r'^[0-9A-Za-z]{8,20}$', new_pwd):
+            return http.HttpResponseForbidden('密码最少8位，最长20位')
+        if new_pwd != new_pwd2:
+            return http.HttpResponseForbidden('两次输入的密码不一致')
+
+        # 修改密码
+        try:
+            request.user.set_password(new_pwd)
+            request.user.save()
+        except Exception as e:
+            logger.error(e)
+            return render(request, 'user_center_pass.html', {'origin_pwd_errmsg': '修改密码失败'})
+
+        # 退出登录，清理状态保持信息
+        logout(request)
+        response = redirect(reverse('users:login'))
+        response.delete_cookie('username')
+
+        # 响应结果: 重定向至登录界面
+        return response
 
 
 class UpdateTitleAddressView(LoginRequiredJsonMixin, View):
