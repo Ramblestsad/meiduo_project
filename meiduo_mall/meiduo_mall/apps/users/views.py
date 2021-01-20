@@ -2,8 +2,6 @@ import json
 import logging
 import re
 
-from django.http import response
-
 from celery_tasks.email.tasks import send_verify_email
 from django import http
 from django.contrib.auth import authenticate, login, logout
