@@ -7,7 +7,8 @@ from meiduo_mall.utils.models import BaseModel
 class GoodsCategory(BaseModel):
     """商品类别"""
     name = models.CharField(max_length=10, verbose_name='名称')
-    parent = models.ForeignKey('self', related_name='subs', null=True, blank=True, on_delete=models.CASCADE, verbose_name='父类别')
+    parent = models.ForeignKey('self', related_name='subs', null=True,
+                               blank=True, on_delete=models.CASCADE, verbose_name='父类别')
 
     class Meta:
         db_table = 'tb_goods_category'
@@ -33,8 +34,10 @@ class GoodsChannelGroup(BaseModel):
 
 class GoodsChannel(BaseModel):
     """商品频道"""
-    group = models.ForeignKey(GoodsChannelGroup, verbose_name='频道组名', on_delete=models.CASCADE)
-    category = models.ForeignKey(GoodsCategory, on_delete=models.CASCADE, verbose_name='顶级商品类别')
+    group = models.ForeignKey(
+        GoodsChannelGroup, on_delete=models.CASCADE, verbose_name='频道组名')
+    category = models.ForeignKey(
+        GoodsCategory, on_delete=models.CASCADE, verbose_name='顶级商品类别')
     url = models.CharField(max_length=50, verbose_name='频道页面链接')
     sequence = models.IntegerField(verbose_name='组内顺序')
 
@@ -65,10 +68,14 @@ class Brand(BaseModel):
 class SPU(BaseModel):
     """商品SPU"""
     name = models.CharField(max_length=50, verbose_name='名称')
-    brand = models.ForeignKey(Brand, on_delete=models.PROTECT, verbose_name='品牌')
-    category1 = models.ForeignKey(GoodsCategory, on_delete=models.PROTECT, related_name='cat1_spu', verbose_name='一级类别')
-    category2 = models.ForeignKey(GoodsCategory, on_delete=models.PROTECT, related_name='cat2_spu', verbose_name='二级类别')
-    category3 = models.ForeignKey(GoodsCategory, on_delete=models.PROTECT, related_name='cat3_spu', verbose_name='三级类别')
+    brand = models.ForeignKey(
+        Brand, on_delete=models.PROTECT, verbose_name='品牌')
+    category1 = models.ForeignKey(
+        GoodsCategory, on_delete=models.PROTECT, related_name='cat1_spu', verbose_name='一级类别')
+    category2 = models.ForeignKey(
+        GoodsCategory, on_delete=models.PROTECT, related_name='cat2_spu', verbose_name='二级类别')
+    category3 = models.ForeignKey(
+        GoodsCategory, on_delete=models.PROTECT, related_name='cat3_spu', verbose_name='三级类别')
     sales = models.IntegerField(default=0, verbose_name='销量')
     comments = models.IntegerField(default=0, verbose_name='评价数')
     desc_detail = models.TextField(default='', verbose_name='详细介绍')
@@ -89,15 +96,20 @@ class SKU(BaseModel):
     name = models.CharField(max_length=50, verbose_name='名称')
     caption = models.CharField(max_length=100, verbose_name='副标题')
     spu = models.ForeignKey(SPU, on_delete=models.CASCADE, verbose_name='商品')
-    category = models.ForeignKey(GoodsCategory, on_delete=models.PROTECT, verbose_name='从属类别')
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='单价')
-    cost_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='进价')
-    market_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='市场价')
+    category = models.ForeignKey(
+        GoodsCategory, on_delete=models.PROTECT, verbose_name='从属类别')
+    price = models.DecimalField(
+        max_digits=10, decimal_places=2, verbose_name='单价')
+    cost_price = models.DecimalField(
+        max_digits=10, decimal_places=2, verbose_name='进价')
+    market_price = models.DecimalField(
+        max_digits=10, decimal_places=2, verbose_name='市场价')
     stock = models.IntegerField(default=0, verbose_name='库存')
     sales = models.IntegerField(default=0, verbose_name='销量')
     comments = models.IntegerField(default=0, verbose_name='评价数')
     is_launched = models.BooleanField(default=True, verbose_name='是否上架销售')
-    default_image_url = models.CharField(max_length=200, default='', null=True, blank=True, verbose_name='默认图片')
+    default_image_url = models.CharField(
+        max_length=200, default='', null=True, blank=True, verbose_name='默认图片')
 
     class Meta:
         db_table = 'tb_sku'
@@ -124,7 +136,8 @@ class SKUImage(BaseModel):
 
 class SPUSpecification(BaseModel):
     """商品SPU规格"""
-    spu = models.ForeignKey(SPU, on_delete=models.CASCADE, related_name='specs', verbose_name='商品SPU')
+    spu = models.ForeignKey(SPU, on_delete=models.CASCADE,
+                            related_name='specs', verbose_name='商品SPU')
     name = models.CharField(max_length=20, verbose_name='规格名称')
 
     class Meta:
@@ -138,7 +151,8 @@ class SPUSpecification(BaseModel):
 
 class SpecificationOption(BaseModel):
     """规格选项"""
-    spec = models.ForeignKey(SPUSpecification, related_name='options', on_delete=models.CASCADE, verbose_name='规格')
+    spec = models.ForeignKey(SPUSpecification, related_name='options',
+                             on_delete=models.CASCADE, verbose_name='规格')
     value = models.CharField(max_length=20, verbose_name='选项值')
 
     class Meta:
@@ -152,9 +166,12 @@ class SpecificationOption(BaseModel):
 
 class SKUSpecification(BaseModel):
     """SKU具体规格"""
-    sku = models.ForeignKey(SKU, related_name='specs', on_delete=models.CASCADE, verbose_name='sku')
-    spec = models.ForeignKey(SPUSpecification, on_delete=models.PROTECT, verbose_name='规格名称')
-    option = models.ForeignKey(SpecificationOption, on_delete=models.PROTECT, verbose_name='规格值')
+    sku = models.ForeignKey(SKU, related_name='specs',
+                            on_delete=models.CASCADE, verbose_name='sku')
+    spec = models.ForeignKey(
+        SPUSpecification, on_delete=models.PROTECT, verbose_name='规格名称')
+    option = models.ForeignKey(
+        SpecificationOption, on_delete=models.PROTECT, verbose_name='规格值')
 
     class Meta:
         db_table = 'tb_sku_specification'
