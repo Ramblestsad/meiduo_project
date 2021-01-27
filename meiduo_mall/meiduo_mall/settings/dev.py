@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     'oauth',
     # areas: 省市区三级联动
     'areas',
+    # goods: 商品数据
+    'goods',
 ]
 
 MIDDLEWARE = [
