@@ -3,6 +3,7 @@ from django.views import View
 from collections import OrderedDict
 
 from goods.models import GoodsChannelGroup, GoodsChannel, GoodsCategory
+from contents.models import ContentCategory, Content
 # Create your views here.
 
 
@@ -43,9 +44,21 @@ class IndexView(View):
                     cat2.sub_cats.append(cat3)
                 categories[group_id]['sub_cats'].append(cat2)
 
+        # 查询首页广告数据
+
+        # 查询广告所有类别：tb_contents_category
+        contents = OrderedDict()
+        content_categories = ContentCategory.objects.all()
+        for content_category in content_categories:
+            contents[content_category.key] = content_category.content_set.filter(
+                status=True).order_by('sequence')
+
+        # 使用广告类别查询其对应的广告内容：tb_contents
+
         # 构建后台渲染context
         context = {
             'categories': categories,
+            'contents': contents,
         }
 
         return render(request, 'index.html', context)
