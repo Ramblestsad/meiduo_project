@@ -71,6 +71,7 @@
 	<div class="navbar_con">
 		<div class="navbar">
 			<h1 class="fl">商品分类</h1>
+            {#
 			<ul class="sub_menu">
 				<li>
 					<div class="level1">
@@ -248,6 +249,30 @@
 					</div>
 				</li>
 			</ul>
+            #}
+            <ul class="sub_menu">
+                {% for group in categories.values() %}
+                <li>
+                    <div class="level1">
+                        {% for channel in group.channels %}
+                        <a href="{{ channel.url }}">{{ channel.name }}</a>
+                        {% endfor %}
+                    </div>
+                    <div class="level2">
+                        {% for cat2 in group.sub_cats %}
+                        <div class="list_group">
+                            <div class="group_name fl">{{ cat2.name }} &gt;</div>
+                            <div class="group_detail fl">
+                                {% for cat3 in cat2.sub_cats %}
+                                <a href="/list/{{ cat3.id }}/1/">{{ cat3.name }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
 			<ul class="navlist fl">
 				<li><a href="">首页</a></li>
 				<li class="interval">|</li>
