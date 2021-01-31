@@ -256,11 +256,14 @@ QQ_CLIENT_SECRET = '418d84ebdc7241efb79536886ae95224'
 QQ_REDIRECT_URI = 'http://www.meiduo.site:8000/oauth_callback'
 
 # 配置邮件服务器
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # 指定邮件后端
-EMAIL_HOST = 'smtp.yeah.net' # 发邮件主机
-EMAIL_PORT = 25 # 发邮件端口
-EMAIL_HOST_USER = 'dailyfreshzxc@yeah.net' # 授权的邮箱
-EMAIL_HOST_PASSWORD = 'dailyfresh123' # 邮箱授权时获得的密码，非注册登录密码
-EMAIL_FROM = '美多商城<dailyfreshzxc@yeah.net>' # 发件人抬头
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # 指定邮件后端
+EMAIL_HOST = 'smtp.yeah.net'  # 发邮件主机
+EMAIL_PORT = 25  # 发邮件端口
+EMAIL_HOST_USER = 'dailyfreshzxc@yeah.net'  # 授权的邮箱
+EMAIL_HOST_PASSWORD = 'dailyfresh123'  # 邮箱授权时获得的密码，非注册登录密码
+EMAIL_FROM = '美多商城<dailyfreshzxc@yeah.net>'  # 发件人抬头
 # 邮箱验证链接
 EMAIL_VERIFY_URL = 'http://www.meiduo.site:8000/emails/verification/'
+
+# 指定自定义的Django文件存储类
+DEFAULT_FILE_STORAGE = 'meiduo_mall.utils.fastdfs.fdfs_storage.FastDFSStorage'
