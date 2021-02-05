@@ -7,7 +7,31 @@ from goods.models import GoodsCategory
 from contents.utils import get_categories
 from goods.utils import get_breadcrumb
 from goods.models import SKU
+from meiduo_mall.utils.response_code import RETCODE
 # Create your views here.
+
+
+class HotGoodsView(View):
+    """热销排行"""
+
+    def get(self, request, category_id):
+
+        # 根据category_id，sales查询前两位sku
+        skus = SKU.objects.filter(
+            category_id=category_id, is_launched=True).order_by('-sales')[:2]
+
+        # 序列化模型列表转字典，构造JSON
+        hot_skus = []
+        for sku in skus:
+            sku_dict = {
+                'id': sku.id,
+                'name': sku.name,
+                'price': sku.price,
+                'default_image_url': sku.default_image.url,
+            }
+            hot_skus.append(sku_dict)
+
+        return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'hot_skus': hot_skus})
 
 
 class ListView(View):
