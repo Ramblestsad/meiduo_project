@@ -20,6 +20,9 @@ from django.urls.conf import include
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    # Haystack
+    re_path(r'^search/', include('haystack.urls')),
+
     # users
     re_path(r'^', include(('users.urls', 'users'), namespace='users')),
     # index
