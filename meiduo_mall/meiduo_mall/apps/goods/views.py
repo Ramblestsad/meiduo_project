@@ -30,13 +30,14 @@ class DetailVisitView(View):
 
         # 获取当天日期
         t = timezone.localtime()
-        today_str = "%d-%02d-%02d"% (t.year, t.month, t.day)
+        today_str = "%d-%02d-%02d" % (t.year, t.month, t.day)
         today_date = datetime.strptime(today_str, '%Y-%m-%d')
 
         # 判断当天指定分类商品对应纪录是否存在
         try:
             # 若存在，则直接获取记录对应的对象
-            counts_data = GoodsVisitCount.objects.get(date=today_date, category_id=category.id)
+            counts_data = GoodsVisitCount.objects.get(
+                date=today_date, category_id=category.id)
         except GoodsVisitCount.DoesNotExist:
             # 若不尊在，则创建记录对应的对象
             counts_data = GoodsVisitCount()
