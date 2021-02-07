@@ -5,7 +5,7 @@
 '''
 Author: Chris W.
 Date: 2020-12-23 17:15:15
-LastEditTime: 2021-01-19 19:06:34
+LastEditTime: 2021-02-07 19:07:12
 LastEditors: Chris W.
 Description: None
 Version: 1.0
@@ -51,4 +51,6 @@ urlpatterns = [
             views.UpdateTitleAddressView.as_view()),
     # 修改密码
     re_path(r'^password/$', views.ChangePwdView.as_view(), name='pass'),
+    # 用户浏览记录
+    re_path(r'^browse_histories/$', views.UserBrowseHistory.as_view()),
 ]

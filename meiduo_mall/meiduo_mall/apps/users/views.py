@@ -17,10 +17,68 @@ from meiduo_mall.utils.views import LoginRequiredJsonMixin
 
 from users.models import Address, User
 from users.utils import check_verify_token, generate_verify_url
-
 from . import constants
-
+from goods.models import SKU
 # Create your views here.
+
+
+class UserBrowseHistory(LoginRequiredJsonMixin, View):
+    """用户浏览记录"""
+
+    def post(self, request):
+        """保存用户商品浏览记录"""
+
+        # 接收、校验参数
+        json_dict = json.loads(request.body.decode())
+        sku_id = json_dict.get('sku_id')
+
+        try:
+            SKU.objects.get(id=sku_id)
+        except SKU.DoesNotExist:
+            return http.HttpResponseForbidden('sku_id错误')
+
+        # 保存sku_id 到 redis 3号库
+        redis_conn = get_redis_connection('history')
+        user = request.user
+        pl = redis_conn.pipeline()
+        # 1.去重 lrem
+        pl.lrem('history_%s' % user.id, 0, sku_id)
+        # 2.添加 lpush
+        pl.lpush('history_%s' % user.id, sku_id)
+        # 3.截取 ltrim
+        pl.ltrim('history_%s' % user.id, 0, 4)
+        # 4.执行
+        pl.execute()
+
+        # 响应结果
+        return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK'})
+
+    def get(self, request):
+        """查询用户商品浏览记录"""
+
+        # 获取sku_id组
+        user = request.user
+        redis_conn = get_redis_connection('history')
+        # pl = redis_conn.pipeline()
+        sku_ids = redis_conn.lrange('history_%s' % user.id, 0, -1)
+
+        # 获取单个sku_id信息
+        skus = []
+        for sku_id in sku_ids:
+            sku = SKU.objects.get(id=sku_id)
+            skus.append({
+                'id': sku.id,
+                'name': sku.name,
+                'price': sku.price,
+                "default_image_url": sku.default_image.url,
+            })
+
+        # 响应结果
+        return http.JsonResponse({
+            'code': RETCODE.OK,
+            'errmsg': 'OK',
+            'skus': skus,
+        })
 
 
 # 创建日志输出器
@@ -48,7 +106,7 @@ class ChangePwdView(LoginRequiredMixin, View):
             request.user.check_password(old_pwd)
         except Exception as e:
             logger.error(e)
-            return render(request, 'user_center_pass.html', {'origin_pwd_errmsg':'原始密码错误'})
+            return render(request, 'user_center_pass.html', {'origin_pwd_errmsg': '原始密码错误'})
         if not re.match(r'^[0-9A-Za-z]{8,20}$', new_pwd):
             return http.HttpResponseForbidden('密码最少8位，最长20位')
         if new_pwd != new_pwd2:
