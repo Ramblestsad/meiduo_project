@@ -19,6 +19,7 @@ from users.models import Address, User
 from users.utils import check_verify_token, generate_verify_url
 from . import constants
 from goods.models import SKU
+from carts.utils import merge_cart_cookie_redis
 # Create your views here.
 
 
@@ -532,6 +533,9 @@ class LoginView(View):
 
         # 首页右上角展示用户名信息：缓存用户名到cookie中
         response.set_cookie("username", user.username, max_age=3600 * 24 * 14)
+
+        # 用户登录成功 ==> 合并cookie购物车&redis购物车
+        response = merge_cart_cookie_redis(request=request, user=user, response=response)
 
         # 响应结果
         return response

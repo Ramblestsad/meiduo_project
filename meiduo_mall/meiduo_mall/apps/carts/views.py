@@ -133,7 +133,6 @@ class CartsView(View):
                 cart_dict_bytes = base64.b64decode(cart_str_bytes)
                 # 3. pickle loads data
                 cart_dict = pickle.loads(cart_dict_bytes)
-                pass
             else:
                 cart_dict = {}
 

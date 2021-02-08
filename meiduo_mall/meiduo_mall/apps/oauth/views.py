@@ -5,14 +5,15 @@ from django.views import View
 from QQLoginTool.QQtool import OAuthQQ
 from django import http
 from django.contrib.auth import login
-import logging, re
+import logging
+import re
 from django_redis import get_redis_connection
 
 from meiduo_mall.utils.response_code import RETCODE
 from oauth.models import OAuthQQUser
 from oauth.utils import generate_access_token, check_access_token
 from users.models import User
-
+from carts.utils import merge_cart_cookie_redis
 # Create your views here.
 
 
@@ -81,6 +82,10 @@ class QQAuthUserView(View):
             response.set_cookie(
                 'username', oauth_user.user.username, max_age=3600 * 24 * 14)
 
+            # 用户登录成功 ==> 合并cookie购物车&redis购物车
+            response = merge_cart_cookie_redis(
+                request=request, user=oauth_user.user, response=response)
+
             # 响应QQ登陆结果
             return response
 
@@ -123,7 +128,8 @@ class QQAuthUserView(View):
         try:
             user = User.objects.get(mobile=mobile)
         except User.DoesNotExist:  # 如果手机号用户不存：新建用户
-            user = User.objects.create_user(username=mobile, password=pwd, mobile=mobile)
+            user = User.objects.create_user(
+                username=mobile, password=pwd, mobile=mobile)
         else:  # 如果手机号对应用户存在：校验密码
             if not user.check_password(pwd):
                 return render(request, 'oauth_callback.html', {'account_errmsg': '账号或密码错误'})
@@ -132,7 +138,8 @@ class QQAuthUserView(View):
         # oauth_qq_user = OAuthQQUser(user=user, openid=open_id)
         # oauth_qq_user.save()
         try:
-            oauth_qq_user = OAuthQQUser.objects.create(user=user, openid=open_id)
+            oauth_qq_user = OAuthQQUser.objects.create(
+                user=user, openid=open_id)
         except Exception as e:
             logger.error(e)
             return render(request, 'oauth_callback.html', {'qq_login_errmsg': '账号或密码错误'})
@@ -146,7 +153,11 @@ class QQAuthUserView(View):
 
         # 用户名写入cookie中
         response.set_cookie(
-                'username', oauth_qq_user.user.username, max_age=3600 * 24 * 14)
+            'username', oauth_qq_user.user.username, max_age=3600 * 24 * 14)
+
+        # 用户登录成功 ==> 合并cookie购物车&redis购物车
+        response = merge_cart_cookie_redis(
+            request=request, user=user, response=response)
 
         # 响应结果
         return response
