@@ -5,7 +5,7 @@
 '''
 Author: Chris W.
 Date: 2021-02-08 14:47:15
-LastEditTime: 2021-02-08 17:45:47
+LastEditTime: 2021-02-08 19:52:05
 LastEditors: Chris W.
 Description: None
 Version: 1.0
@@ -24,4 +24,6 @@ urlpatterns = [
     re_path(r'^carts/$', views.CartsView.as_view(), name='info'),
     # 购物车全选
     re_path(r'^carts/selection/$', views.CartsSelectAllView.as_view()),
+    # 简单购物车接口
+    re_path(r'^carts/simple/$', views.CartsSimpleView.as_view()),
 ]
