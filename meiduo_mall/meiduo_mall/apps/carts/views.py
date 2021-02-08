@@ -2,7 +2,9 @@ from django import http
 from django.shortcuts import render
 from django.views import View
 from django_redis import get_redis_connection
-import json, base64, pickle
+import json
+import base64
+import pickle
 
 from goods.models import SKU
 from meiduo_mall.utils.response_code import RETCODE
@@ -45,15 +47,15 @@ class CartsView(View):
             redis_conn = get_redis_connection('carts')
             pl = redis_conn.pipeline()
             # 保存商品数据: 以redis hash类型的HINCRBY方式：有则加count无则加key
-            pl.hincrby('carts_%s'% user.id, sku_id, count)
+            pl.hincrby('carts_%s' % user.id, sku_id, count)
             # 保存selected商品勾选状态
             if selected:
-                pl.sadd('selected_%s'% user.id, sku_id)
+                pl.sadd('selected_%s' % user.id, sku_id)
 
             pl.execute()
 
             # 响应结果
-            return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK',})
+            return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', })
         else:
             # 若未登录，操作cookie购物车
             # 获取cookie中的购物车数据并判断是否有购物车数据
@@ -86,7 +88,8 @@ class CartsView(View):
             cart_str = cart_str_bytes.decode()
 
             # 将carts_dict 写入cookie
-            response = http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK',})
+            response = http.JsonResponse(
+                {'code': RETCODE.OK, 'errmsg': 'OK', })
             response.set_cookie('carts', cart_str)
 
             # 响应结果
@@ -102,9 +105,9 @@ class CartsView(View):
             redis_conn = get_redis_connection('carts')
 
             # 查询hash数据：user_id, sku_id, count
-            redis_cart = redis_conn.hgetall('carts_%s'% user.id)  # dict
+            redis_cart = redis_conn.hgetall('carts_%s' % user.id)  # dict
             # 查询set数据: selected
-            cart_selected = redis_conn.smembers('selected_%s'% user.id)  # set
+            cart_selected = redis_conn.smembers('selected_%s' % user.id)  # set
 
             # 合并redis_cart 和 redis_selected, 与未登录用户cookie购物车一致
             cart_dict = {}
@@ -136,17 +139,18 @@ class CartsView(View):
         cart_skus = []
         for sku in skus:
             cart_skus.append({
-                'id':sku.id,
-                'name':sku.name,
+                'id': sku.id,
+                'name': sku.name,
                 'count': cart_dict.get(sku.id).get('count'),
-                'selected': str(cart_dict.get(sku.id).get('selected')),  # 将True，转'True'，方便json解析
-                'default_image_url':sku.default_image.url,
-                'price':str(sku.price), # 从Decimal('10.2')中取出'10.2'，方便json解析
-                'amount':str(float(sku.price) * int(cart_dict.get(sku.id).get('count'))),
+                # 将True，转'True'，方便json解析
+                'selected': str(cart_dict.get(sku.id).get('selected')),
+                'default_image_url': sku.default_image.url,
+                'price': str(sku.price),  # 从Decimal('10.2')中取出'10.2'，方便json解析
+                'amount': str(float(sku.price) * int(cart_dict.get(sku.id).get('count'))),
             })
 
         context = {
-            'cart_skus':cart_skus,
+            'cart_skus': cart_skus,
         }
 
         return render(request, 'cart.html', context)
