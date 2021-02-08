@@ -23,7 +23,7 @@
                     <a href="{{ url('users:logout') }}" class="quit">退出</a>
                 </div>
                 <div v-else class="login_btn fl">
-                    <a href="login.html">登录</a>
+                    <a href="{{ url('users:login') }}">登录</a>
                     <span>|</span>
                     <a href="register.html">注册</a>
                 </div>
@@ -31,7 +31,7 @@
                     <span>|</span>
                     <a href="{{ url('users:info') }}">用户中心</a>
                     <span>|</span>
-                    <a href="cart.html">我的购物车</a>
+                    <a href="{{ url('carts:info') }}">我的购物车</a>
                     <span>|</span>
                     <a href="user_center_order.html">我的订单</a>
                 </div>
@@ -53,7 +53,7 @@
             </ul>
         </div>
         <div class="guest_cart fr">
-            <a href="cart.html" class="cart_name fl">我的购物车</a>
+            <a href="{{ url('carts:info') }}" class="cart_name fl">我的购物车</a>
             <div class="goods_count fl" id="show_count">2</div>
             <ul class="cart_goods_show">
                 <li>
