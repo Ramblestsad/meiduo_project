@@ -5,7 +5,7 @@
 '''
 Author: Chris W.
 Date: 2021-02-13 15:05:24
-LastEditTime: 2021-02-13 17:22:44
+LastEditTime: 2021-02-13 17:38:01
 LastEditors: Chris W.
 Description: None
 Version: 1.0
@@ -23,4 +23,6 @@ urlpatterns = [
     re_path(r'^orders/settlement/$', views.OrderSettlementView.as_view(), name='settlement'),
     # 提交订单
     re_path(r'^orders/commit/$', views.OrderCommitView.as_view()),
+    # 提交订单成功
+    re_path(r'^orders/success/$', views.OrderSuccessView.as_view()),
 ]
