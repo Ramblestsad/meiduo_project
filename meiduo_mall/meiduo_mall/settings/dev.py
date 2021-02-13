@@ -63,6 +63,8 @@ INSTALLED_APPS = [
     'goods',
     # carts: 购物车
     'carts',
+    # orders: 订单结算
+    'orders',
 ]
 
 MIDDLEWARE = [
