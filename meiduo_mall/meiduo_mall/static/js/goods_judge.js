@@ -1,6 +1,7 @@
 var vm = new Vue({
     el: '#app',
     data: {
+        username: username,
         score: 0,
         display_score: 0,
         final_score: 0

@@ -5,7 +5,7 @@
 '''
 Author: Chris W.
 Date: 2021-02-13 15:05:24
-LastEditTime: 2021-02-16 11:41:32
+LastEditTime: 2021-02-16 12:31:24
 LastEditors: Chris W.
 Description: None
 Version: 1.0
@@ -29,4 +29,6 @@ urlpatterns = [
     # 我的订单展示页面
     re_path(r'^orders/info/(?P<page_num>\d+)/$',
             views.UserOrderInfoView.as_view(), name='info'),
+    # 商品评价页面
+    re_path(r'^orders/comment/$', views.OrderCommentView.as_view(), name='comment')
 ]
