@@ -30,9 +30,9 @@
                     <span>|</span>
                     <a href="{{ url('users:info') }}">用户中心</a>
                     <span>|</span>
-                    <a href="cart.html">我的购物车</a>
+                    <a href="{{ url('carts:info') }}">我的购物车</a>
                     <span>|</span>
-                    <a href="user_center_order.html">我的订单</a>
+                    <a href="{{ url('orders:info', args=(1, )) }}">我的订单</a>
                 </div>
             </div>
         </div>
@@ -57,8 +57,8 @@
             <ul class="goods_type_list clearfix">
                 {% for result in page %}
                 <li>
-                    <a href="detail.html"><img src="{{ result.object.default_image.url }}"></a>
-                    <h4><a href="detail.html">{{ result.object.name }}</a></h4>
+                    <a href="{{ url('goods:detail', args=(result.object.id,)) }}"><img src="{{ result.object.default_image.url }}"></a>
+                    <h4><a href="{{ url('goods:detail', args=(result.object.id,)) }}">{{ result.object.name }}</a></h4>
                     <div class="operate">
                         <span class="price">{{ result.object.price }}</span>
                         <span>{{ result.object.comments }}评价</span>
