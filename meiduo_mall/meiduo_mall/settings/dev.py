@@ -33,6 +33,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'www.meiduo.site',
     '127.0.0.1',
+    '172.16.109.2',
 ]  # type: list
 
 
@@ -126,10 +127,10 @@ DATABASES = {
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '127.0.0.1',
+        'HOST': '172.16.109.2',
         'PORT': 3306,
-        'USER': 'itcast',
-        'PASSWORD': '123456',
+        'USER': 'chris',
+        'PASSWORD': 'Wyl5161696!',
         'NAME': 'meiduo',
     }
 }
@@ -138,46 +139,46 @@ DATABASES = {
 CACHES = {
     "default": {  # default db 0
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/0",
+        "LOCATION": "redis://172.16.109.2:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "session": {  # session store in db 1
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": "redis://172.16.109.2:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "verify_code": {  # verify code store in db 2
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/2",
+        "LOCATION": "redis://172.16.109.2:6379/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     # "verify_code": { # verify_code store to db 2
     #     "BACKEND": "django_redis.cache.RedisCache",
-    #     "LOCATION": "redis://127.0.0.1:6379/2",
+    #     "LOCATION": "redis://172.16.109.2:6379/2",
     #     "OPTIONS": {
     #         "CLIENT_CLASS": "django_redis.client.DefaultClient",
     #     }
     # },
     "history": {  # 用户浏览记录
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/3",
+        "LOCATION": "redis://172.16.109.2:6379/3",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "carts": {  # 购物车
-    "BACKEND": "django_redis.cache.RedisCache",
-    "LOCATION": "redis://127.0.0.1:6379/4",
-    "OPTIONS": {
-        "CLIENT_CLASS": "django_redis.client.DefaultClient",
-    }
-},
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://172.16.109.2:6379/4",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
 }
 # config session db to redis
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
@@ -301,8 +302,8 @@ FDFS_BASE_URL = 'http://172.16.109.2:8888/'
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://172.16.109.2:9200/', # Elasticsearch服务器ip地址，端口号固定为9200
-        'INDEX_NAME': 'meiduo_mall', # Elasticsearch建立的索引库的名称
+        'URL': 'http://172.16.109.2:9200/',  # Elasticsearch服务器ip地址，端口号固定为9200
+        'INDEX_NAME': 'meiduo_mall',  # Elasticsearch建立的索引库的名称
     },
 }
 # 当添加、修改、删除数据时，自动生成索引
@@ -319,7 +320,8 @@ ALIPAY_RETURN_URL = "http://127.0.0.1:8000/payment/status/"
 # 定时器配置
 CRONJOBS = [
     # 每1分钟生成一次首页静态文件
-    ('*/1 * * * *', 'contents.crons.generate_static_index_html', '>> ' + os.path.join(os.path.dirname(BASE_DIR), 'logs/crontab.log'))
+    ('*/1 * * * *', 'contents.crons.generate_static_index_html',
+     '>> ' + os.path.join(os.path.dirname(BASE_DIR), 'logs/crontab.log'))
 ]
 # 解决crontab中文问题
 CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
