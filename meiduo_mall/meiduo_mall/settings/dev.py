@@ -122,7 +122,7 @@ WSGI_APPLICATION = 'meiduo_mall.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'default': {  # 写（主机）
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 
@@ -132,8 +132,17 @@ DATABASES = {
         'USER': 'chris',
         'PASSWORD': 'Wyl5161696!',
         'NAME': 'meiduo',
+    },
+    'slave': {  # 读（从机）
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': '172.16.109.2',
+        'PORT': 3307,
+        'USER': 'root',
+        'PASSWORD': 'Wyl5161696!',
+        'NAME': 'meiduo'
     }
 }
+DATABASE_ROUTERS = ['meiduo_mall.utils.db_router.MasterSlaveDBRouter']
 
 # config redis cache
 CACHES = {
