@@ -20,11 +20,9 @@ class MeiduoModelBackend(ModelBackend):
                 user = User.objects.get(mobile=username)
             except:
                 return None
-                # return None
 
         # 判断密码
         if user.check_password(password):
             return user
         else:
             return None
-

@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'haystack',
     # 定时任务
     'django_crontab',
+    # 跨域问题解决
+    'corsheaders',
 
     # 'meiduo_mall.apps.users'  # app [users]
     'users',
@@ -75,6 +77,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -337,11 +340,11 @@ CRONJOBS = [
 CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
 
 # CORS
-# CORS_ORIGIN_WHITELIST = (
-#     '127.0.0.1:8080',
-#     '127.0.0.1:8000',
-#     'localhost:8080',
-#     'www.meiduo.site:8080',
-#     'api.meiduo.site:8000'
-# )
-# CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
+CORS_ORIGIN_WHITELIST = (
+    '127.0.0.1:8080',
+    '127.0.0.1:8000',
+    'localhost:8080',
+    'www.meiduo.site:8080',
+    'api.meiduo.site:8000'
+)
+CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
