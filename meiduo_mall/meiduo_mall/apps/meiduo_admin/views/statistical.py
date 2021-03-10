@@ -14,6 +14,7 @@ License: None
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
+from django.utils.timezone import make_aware
 import datetime
 
 from users.models import User
@@ -102,3 +103,37 @@ class DayOrderView(APIView):
             'count': count,
             'date': now_date
         })
+
+
+class MonthIncreUserView(APIView):
+    """月新增用户:一个月内每天注册的用户"""
+
+    def get(self, request):
+
+        # 获取当前日期
+        now_date = datetime.date.today()
+
+        # 获取一个月前日期
+        start_date = now_date - datetime.timedelta(days=29)
+
+        # 创建空列表保存每天新增用户量
+        date_list = []
+
+        for i in range(30):
+
+            # 日期逐步增加
+            index_date = start_date + datetime.timedelta(days=i)
+            # 第二天日期
+            next_date = start_date + datetime.timedelta(days=i+1)
+
+            # 数据查询
+            count = User.objects.filter(
+                date_joined__gte=index_date, date_joined__lt=next_date).count()
+
+            # 构造返回数据列表
+            date_list.append({
+                'count': count,
+                'date': index_date
+            })
+
+        return Response(date_list)
