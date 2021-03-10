@@ -14,10 +14,12 @@ License: None
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
-from django.utils.timezone import make_aware
+from django.utils.timezone import make_aware, now
 import datetime
 
 from users.models import User
+from goods.models import GoodsVisitCount
+from meiduo_admin.serializers.statistical import GoodsCategoryDailySerializer
 
 
 class UserCountView(APIView):
@@ -137,3 +139,20 @@ class MonthIncreUserView(APIView):
             })
 
         return Response(date_list)
+
+
+class GoodsCategoryDailyView(APIView):
+    """日分类商品访问量统计"""
+
+    def get(self, request):
+
+        # 获取当天日期
+        now_date = datetime.date.today()
+
+        # 获取当天访问的商品分类数量信息
+        data = GoodsVisitCount.objects.filter(date__gte=now_date)
+
+        # 序列化返回分类数量
+        ser = GoodsCategoryDailySerializer(data, many=True)
+
+        return Response(ser.data)

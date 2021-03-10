@@ -31,4 +31,6 @@ urlpatterns = [
     re_path(r'^statistical/day_orders/$', statistical.DayOrderView.as_view()),
     # 5.月增用户
     re_path(r'^statistical/month_increment/$', statistical.MonthIncreUserView.as_view()),
+    # 6.日分类商品访问量
+    re_path(r'^statistical/goods_day_views/$', statistical.GoodsCategoryDailyView.as_view()),
 ]
