@@ -35,8 +35,8 @@ class UserCountView(APIView):
 
         # 返回结果
         return Response({
-            'date': now_date,
-            'count': count
+            'count': count,
+            'date': now_date
         })
 
 
@@ -56,6 +56,27 @@ class DayIncreView(APIView):
 
         # 返回结果
         return Response({
-            'date': now_date,
-            'count': count
+            'count': count,
+            'date': now_date
+        })
+
+
+class DayActiveView(APIView):
+    """日活用户统计: 当天登录过的用户"""
+
+    # 权限指定
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+
+        # 获取当天日期
+        now_date = datetime.date.today()
+
+        # 获取当天新注册用户总量
+        count = User.objects.filter(last_login__gte=now_date).count()
+
+        # 返回结果
+        return Response({
+            'count': count,
+            'date': now_date
         })
