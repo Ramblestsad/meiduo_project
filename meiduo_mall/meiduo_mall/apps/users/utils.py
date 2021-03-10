@@ -64,26 +64,3 @@ def get_user_by_account(account):
         return None
     else:
         return user
-
-
-class UsernameMobileBackend(ModelBackend):
-    """自定义用户认证后端"""
-
-    def authenticate(self, request, username=None, password=None, **kwargs):
-        """
-        重写用户认证方法
-        :param username: username or mobile
-        :param password: 密码明文
-        :param kwargs: 额外参数
-        :return: user
-        """
-
-        user = get_user_by_account(username)
-
-        # 若可以查询到用户，校验密码是否正确
-        if user and user.check_password(password):
-            return user
-        else:
-            return None
-
-        # 返回user

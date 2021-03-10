@@ -42,5 +42,5 @@ urlpatterns = [
     # payment
     re_path(r'^', include(('payment.urls', 'payment'), namespace='payment')),
     # background admin
-    # re_path(r'^meiduo_admin/', include(('meiduo_admin.urls', 'admin'), namespace='meiduo_admin'))
+    re_path(r'^meiduo_admin/', include(('meiduo_admin.urls', 'admin'), namespace='meiduo_admin'))
 ]
