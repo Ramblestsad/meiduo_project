@@ -94,7 +94,8 @@ class DayOrderView(APIView):
         now_date = datetime.date.today()
 
         # 获取当天下订单用户总量
-        count = User.objects.filter(orders__create_time__gte=now_date).count()
+        count = len(set(User.objects.filter(
+            orders__create_time__gte=now_date)))
 
         # 返回结果
         return Response({
