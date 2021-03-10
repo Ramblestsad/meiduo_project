@@ -72,8 +72,29 @@ class DayActiveView(APIView):
         # 获取当天日期
         now_date = datetime.date.today()
 
-        # 获取当天新注册用户总量
+        # 获取当天登录过用户总量
         count = User.objects.filter(last_login__gte=now_date).count()
+
+        # 返回结果
+        return Response({
+            'count': count,
+            'date': now_date
+        })
+
+
+class DayOrderView(APIView):
+    """日下单用户统计"""
+
+    # 权限指定
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+
+        # 获取当天日期
+        now_date = datetime.date.today()
+
+        # 获取当天下订单用户总量
+        count = User.objects.filter(orders__create_time__gte=now_date).count()
 
         # 返回结果
         return Response({
