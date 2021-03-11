@@ -14,7 +14,6 @@ License: None
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
-from django.utils.timezone import make_aware, now
 import datetime
 
 from users.models import User
