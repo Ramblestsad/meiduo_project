@@ -12,6 +12,7 @@ License: None
 
 
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
 from goods.models import SPUSpecification, SPU
@@ -25,6 +26,7 @@ class SpecsView(ModelViewSet):
     queryset = SPUSpecification.objects.all().order_by('spu_id')
     serializer_class = SpecsSerializer
     pagination_class = PageNum
+    permission_classes = [IsAdminUser]
 
     def simple(self, request):
         """

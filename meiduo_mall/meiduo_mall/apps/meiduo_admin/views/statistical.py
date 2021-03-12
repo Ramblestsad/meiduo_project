@@ -109,6 +109,9 @@ class DayOrderView(APIView):
 class MonthIncreUserView(APIView):
     """月新增用户:一个月内每天注册的用户"""
 
+    # 权限指定
+    permission_classes = [IsAdminUser]
+
     def get(self, request):
 
         # 获取当前日期
@@ -142,6 +145,9 @@ class MonthIncreUserView(APIView):
 
 class GoodsCategoryDailyView(APIView):
     """日分类商品访问量统计"""
+
+    # 权限指定
+    permission_classes = [IsAdminUser]
 
     def get(self, request):
 
