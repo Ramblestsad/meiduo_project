@@ -13,8 +13,9 @@ License: None
 
 from django.urls import re_path
 from rest_framework_jwt.views import obtain_jwt_token
+from rest_framework.routers import DefaultRouter
 
-from .views import statistical, users
+from .views import statistical, users, specs
 
 
 urlpatterns = [
@@ -42,3 +43,9 @@ urlpatterns = [
     # 1.查询用户：单一或所有
     re_path(r'^users/$', users.UsersView.as_view()),
 ]
+
+# ------规格表路由------
+router = DefaultRouter()
+router.register('goods/specs', specs.SpecsView, basename='specs')
+# print(router.urls)
+urlpatterns = urlpatterns + router.urls
