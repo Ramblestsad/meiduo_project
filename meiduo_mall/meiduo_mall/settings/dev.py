@@ -312,6 +312,8 @@ DEFAULT_FILE_STORAGE = 'meiduo_mall.utils.fastdfs.fdfs_storage.FastDFSStorage'
 # FastDFS相关参数
 FDFS_BASE_URL = 'http://172.16.109.2:8888/'
 # FDFS_BASE_URL = 'http://image.meiduo.site:8888/'
+# FastDFS配置文件路径
+FASTDFS_PATH = os.path.join(BASE_DIR, 'utils/fastdfs/client.conf')
 
 # Haystack - elasticsearch api
 HAYSTACK_CONNECTIONS = {

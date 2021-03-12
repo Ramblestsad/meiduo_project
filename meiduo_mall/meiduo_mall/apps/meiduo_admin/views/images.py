@@ -38,3 +38,34 @@ class ImagesView(ModelViewSet):
         ser = SKUSerializer(skus, many=True)
 
         return Response(ser.data)
+
+    # 封装序列化器create方法后，ModelViewSet的父类create方法就可以完成业务逻辑
+    # def create(self, request, *args, **kwargs):
+    #     """重写create方法以存图片入FastDFS"""
+
+    #     # 1.获取前端数据
+    #     data = request.data
+
+    #     # 2.验证数据
+    #     ser = self.get_serializer(data=data)
+    #     ser.is_valid()
+
+    #     # # 3.简历fastdfs客户端
+    #     # client = Fdfs_client(settings.FASTDFS_PATH)
+    #     # file = request.FILES.get('image')
+
+    #     # # 4.上传图片
+    #     # result = client.upload_appender_by_buffer(file.read())
+
+    #     # # 5.判断是否上传成功
+    #     # if result['Status'] != 'Upload successed.':
+    #     #     return Response({'error': '图片上传失败'})
+
+    #     # # 6.保存图片表
+    #     # img = SKUImage.objects.create(
+    #     #     sku=ser.validated_data['sku'], image=result['Remote file_id'])
+
+    #     ser.save()  # 调用序列化器的create的方法
+
+    #     # 7.返回保存后的图片数据
+    #     return Response(ser.data, status=201)
