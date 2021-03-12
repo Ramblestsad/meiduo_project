@@ -13,7 +13,7 @@ License: None
 
 from rest_framework import serializers
 
-from goods.models import SKUImage
+from goods.models import SKUImage, SKU
 
 
 class ImagesSerializer(serializers.ModelSerializer):
@@ -25,3 +25,12 @@ class ImagesSerializer(serializers.ModelSerializer):
 
         model = SKUImage
         fields = "__all__"
+
+
+class SKUSerializer(serializers.ModelSerializer):
+    """SKU商品信息序列化器"""
+
+    class Meta:
+
+        model = SKU
+        fields = ('id', 'name')

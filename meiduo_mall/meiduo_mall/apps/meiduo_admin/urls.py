@@ -45,6 +45,9 @@ urlpatterns = [
 
     # --------规格路由表，SPU商品信息--------
     re_path(r'^goods/simple/$', specs.SpecsView.as_view({'get': 'simple'})),
+
+    # --------图片SKU信息路由--------
+    re_path(r'^skus/simple/$', images.ImagesView.as_view({'get': 'simple'})),
 ]
 
 # ------规格表路由------
