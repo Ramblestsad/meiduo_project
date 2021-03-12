@@ -17,6 +17,7 @@ from django.conf import settings
 from rest_framework.response import Response
 
 from goods.models import SKUImage, SKU
+from celery_tasks.static_file.tasks import get_detail_html
 
 
 class ImagesSerializer(serializers.ModelSerializer):
@@ -46,6 +47,9 @@ class ImagesSerializer(serializers.ModelSerializer):
         img = SKUImage.objects.create(
             sku=validated_data['sku'], image=result['Remote file_id'])
 
+        # 异步生成goods_detail html
+        get_detail_html.delay(img.sku.id)
+
         return img
 
     def update(self, instance, validated_data):
@@ -66,6 +70,9 @@ class ImagesSerializer(serializers.ModelSerializer):
         # 6.更新图片表
         instance.image = result['Remote file_id']
         instance.save()
+
+        # 异步生成goods_detail html
+        get_detail_html.delay(instance.sku.id)
 
         return instance
 
