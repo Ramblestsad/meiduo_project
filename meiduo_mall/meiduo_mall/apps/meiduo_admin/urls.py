@@ -42,6 +42,9 @@ urlpatterns = [
     # --------用户管理--------
     # 1.查询用户：单一或所有
     re_path(r'^users/$', users.UsersView.as_view()),
+
+    # --------规格路由表，SPU商品信息--------
+    re_path(r'^goods/simple/$', specs.SpecsView.as_view({'get': 'simple'})),
 ]
 
 # ------规格表路由------

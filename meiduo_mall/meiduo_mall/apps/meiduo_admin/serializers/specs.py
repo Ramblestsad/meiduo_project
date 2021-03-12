@@ -13,7 +13,7 @@ License: None
 
 from rest_framework import serializers
 
-from goods.models import SPUSpecification
+from goods.models import SPUSpecification, SPU
 
 
 class SpecsSerializer(serializers.ModelSerializer):
@@ -27,3 +27,14 @@ class SpecsSerializer(serializers.ModelSerializer):
 
         model = SPUSpecification
         fields = "__all__"
+
+
+class SPUSerializer(serializers.ModelSerializer):
+    """
+        SPU商品信息序列化器
+    """
+
+    class Meta:
+
+        model = SPU
+        fields = ('id', 'name')
