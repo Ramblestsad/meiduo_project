@@ -35,7 +35,7 @@ class SKUSerializer(serializers.ModelSerializer):
     spu_id = serializers.IntegerField()
     category_id = serializers.IntegerField()
 
-    #sku_specification表中关联了sku，related_name: specs
+    # sku_specification表中关联了sku，related_name: specs
     specs = SKUSpecsSerializer(read_only=True, many=True)
 
     class Meta:
@@ -74,6 +74,40 @@ class SKUSerializer(serializers.ModelSerializer):
                 transaction.savepoint_commit(save_point)
 
                 return sku
+
+    def update(self, instance, validated_data):
+        """
+            更新SKU表
+            更新SKU规格表
+        """
+
+        specs = self.context['request'].data.get('specs')
+
+        # 开启事务: 第二种方法
+        with transaction.atomic():
+            # 设置保存点
+            save_point = transaction.savepoint()
+
+            try:
+                # 修改SKU表
+                SKU.objects.filter(id=instance.id).update(**validated_data)
+
+                # 修改SKU规格表
+                for spec in specs:
+                    # SKUSpecification.objects.filter(sku=instance).update(**spec)
+                    SKUSpecification.objects.create(
+                        sku=instance, spec_id=spec['spec_id'], option_id=spec['option_id'])
+
+            except:
+                # 回滚
+                transaction.savepoint_rollback(save_point)
+                raise serializers.ValidationError('保存失败')
+
+            else:
+                # 提交
+                transaction.savepoint_commit(save_point)
+
+                return instance
 
 
 class SKUCategorySerailizer(serializers.ModelSerializer):
