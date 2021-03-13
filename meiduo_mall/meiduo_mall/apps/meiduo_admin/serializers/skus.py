@@ -19,10 +19,14 @@ from goods.models import SKU, GoodsCategory, SPUSpecification, SpecificationOpti
 class SKUSerializer(serializers.ModelSerializer):
     """SKU序列化器"""
 
+    spu_id = serializers.IntegerField()
+    category_id = serializers.IntegerField()
+
     class Meta:
 
         model = SKU
         fields = "__all__"
+        read_only_fields = ('spu', 'category')
 
 
 class SKUCategorySerailizer(serializers.ModelSerializer):
