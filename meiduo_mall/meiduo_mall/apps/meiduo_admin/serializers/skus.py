@@ -17,11 +17,26 @@ from django.db import transaction
 from goods.models import SKU, GoodsCategory, SPUSpecification, SpecificationOption, SKUSpecification
 
 
+class SKUSpecsSerializer(serializers.ModelSerializer):
+    """SKU具体规格表序列化器"""
+
+    spec_id = serializers.IntegerField()
+    option_id = serializers.IntegerField()
+
+    class Meta:
+
+        model = SKUSpecification
+        fields = ('spec_id', 'option_id')
+
+
 class SKUSerializer(serializers.ModelSerializer):
     """SKU序列化器"""
 
     spu_id = serializers.IntegerField()
     category_id = serializers.IntegerField()
+
+    #sku_specification表中关联了sku，related_name: specs
+    specs = SKUSpecsSerializer(read_only=True, many=True)
 
     class Meta:
 
