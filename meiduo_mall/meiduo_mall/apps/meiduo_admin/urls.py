@@ -48,6 +48,10 @@ urlpatterns = [
 
     # --------图片SKU信息路由--------
     re_path(r'^skus/simple/$', images.ImagesView.as_view({'get': 'simple'})),
+
+    # --------SKU路由--------
+    # 规格路由
+    re_path(r'^goods/(?P<pk>\d+)/specs/$', skus.SKUView.as_view({'get': 'SPUspecs'})),
 ]
 
 # ------规格表路由------

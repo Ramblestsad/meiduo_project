@@ -10,14 +10,15 @@ Version: 1.0
 License: None
 """
 
+from os import truncate
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
 from rest_framework.decorators import action
 
 from meiduo_admin.utils import PageNum
-from meiduo_admin.serializers.skus import SKUSerializer, SKUCategorySerailizer
-from goods.models import SKU, GoodsCategory
+from meiduo_admin.serializers.skus import SKUSerializer, SKUCategorySerailizer, SPUSpecsSerializer
+from goods.models import SKU, GoodsCategory, SPU
 
 
 class SKUView(ModelViewSet):
@@ -46,5 +47,19 @@ class SKUView(ModelViewSet):
 
         data = GoodsCategory.objects.filter(subs__id=None)
         ser = SKUCategorySerailizer(data, many=True)
+
+        return Response(ser.data)
+
+    def SPUspecs(self, request, pk):
+        """获取前端返回的SPU规格信息"""
+
+        # 1.查询spu对象
+        spu = SPU.objects.get(id=pk)
+
+        # 2.关联查询所关联的规格表
+        data = spu.specs.all().order_by('id')
+
+        # 3.直接序列化返回规格表并嵌套规格选项表
+        ser = SPUSpecsSerializer(data, many=True)
 
         return Response(ser.data)

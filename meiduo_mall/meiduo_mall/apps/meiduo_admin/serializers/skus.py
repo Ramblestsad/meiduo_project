@@ -13,7 +13,7 @@ License: None
 
 from rest_framework import serializers
 
-from goods.models import SKU, GoodsCategory
+from goods.models import SKU, GoodsCategory, SPUSpecification, SpecificationOption
 
 
 class SKUSerializer(serializers.ModelSerializer):
@@ -31,3 +31,24 @@ class SKUCategorySerailizer(serializers.ModelSerializer):
 
         model = GoodsCategory
         fields = '__all__'
+
+
+class SpecsOptionSerializer(serializers.ModelSerializer):
+    """规格选项序列化器"""
+
+    class Meta:
+
+        model = SpecificationOption
+        fields = "__all__"
+
+
+class SPUSpecsSerializer(serializers.ModelSerializer):
+    """SPU规格序列化器"""
+
+    options = SpecsOptionSerializer(many=True)
+    # specsoption_set = SpecificationOption(many=True) tip: 没有指定副表 relateed_name时
+
+    class Meta:
+
+        model = SPUSpecification
+        fields = "__all__"
