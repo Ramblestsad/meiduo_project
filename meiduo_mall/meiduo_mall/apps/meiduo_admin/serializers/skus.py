@@ -12,8 +12,9 @@ License: None
 
 
 from rest_framework import serializers
+from django.db import transaction
 
-from goods.models import SKU, GoodsCategory, SPUSpecification, SpecificationOption
+from goods.models import SKU, GoodsCategory, SPUSpecification, SpecificationOption, SKUSpecification
 
 
 class SKUSerializer(serializers.ModelSerializer):
@@ -27,6 +28,37 @@ class SKUSerializer(serializers.ModelSerializer):
         model = SKU
         fields = "__all__"
         read_only_fields = ('spu', 'category')
+
+    # @transaction.atomic() 第一种方式开启事务
+    def create(self, validated_data):
+        """
+            保存SKU到SKU表
+            保存SKU具体规格
+        """
+
+        specs = self.context['request'].data.get('specs')
+
+        # 开启事务: 第二种方法
+        with transaction.atomic():
+            # 设置保存点
+            save_point = transaction.savepoint()
+
+            try:
+                # 保存SKU
+                sku = SKU.objects.create(**validated_data)
+                # 保存SKU具体规格
+                for spec in specs:
+                    SKUSpecification.objects.create(
+                        spec_id=spec['spec_id'], option_id=spec['option_id'], sku=sku)
+            except:
+                # 回滚
+                transaction.savepoint_rollback(save_point)
+                raise serializers.ValidationError('保存失败')
+            else:
+                # 提交
+                transaction.savepoint_commit(save_point)
+
+                return sku
 
 
 class SKUCategorySerailizer(serializers.ModelSerializer):
