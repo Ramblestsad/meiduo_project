@@ -23,6 +23,17 @@ class SKUView(ModelViewSet):
 
     permission_classes = [IsAdminUser]
 
-    queryset = SKU.objects.all().order_by('id')
+    # queryset = SKU.objects.all().order_by('id')
     serializer_class = SKUSerializer
     pagination_class = PageNum
+
+    def get_queryset(self):
+        """SKU获取单一信息"""
+
+        # 提取keyword
+        keyword = self.request.query_params.get('keyword')
+
+        if keyword == '' or keyword is None:
+            return SKU.objects.all().order_by('id')
+        else:
+            return SKU.objects.filter(name__contains=keyword).order_by('id')
