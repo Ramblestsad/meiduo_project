@@ -12,6 +12,8 @@ License: None
 
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.permissions import IsAdminUser
+from rest_framework.response import Response
+from rest_framework.decorators import action
 
 from orders.models import OrderInfo
 from meiduo_admin.utils import PageNum
@@ -36,3 +38,27 @@ class OrderView(ReadOnlyModelViewSet):
             return OrderInfo.objects.all().order_by('id')
         else:
             return OrderInfo.objects.filter(order_id__contains=keyword).order_by('id')
+
+    @action(methods=['put'], detail=True)
+    def status(self, request, pk):
+        """修改订单状态"""
+
+        # 查询要修改的订单对象
+        try:
+            order = OrderInfo.objects.get(order_id=pk)
+        except:
+            return Response({'error': '订单编号错误'})
+
+        # 修改订单状态
+        # - 获取订单状态
+        status = request.data.get('status')
+        if status is None:
+            return Response({'error': '缺少状态值'})
+        order.status = status
+        order.save
+
+        # 返回结果
+        return Response({
+            'order_id': pk,
+            'stauts': status
+        })
