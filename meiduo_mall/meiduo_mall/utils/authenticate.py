@@ -12,7 +12,7 @@ class MeiduoModelBackend(ModelBackend):
             # 后台登录
             try:
                 # 判断用户是否是超级管理员用户
-                user = User.objects.get(username=username, is_superuser=True)
+                user = User.objects.get(username=username, is_staff=True)
             except:
                 return None
 
