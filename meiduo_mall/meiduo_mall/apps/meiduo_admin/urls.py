@@ -51,7 +51,12 @@ urlpatterns = [
 
     # --------SKU路由--------
     # 规格路由
-    re_path(r'^goods/(?P<pk>\d+)/specs/$', skus.SKUView.as_view({'get': 'SPUspecs'})),
+    re_path(r'^goods/(?P<pk>\d+)/specs/$',
+            skus.SKUView.as_view({'get': 'SPUspecs'})),
+
+    # --------permissions路由--------
+    re_path(r'^permission/content_types/$',
+            permission.PermissionsView.as_view({'get': 'content_type'})),
 ]
 
 # ------规格表路由------
@@ -80,6 +85,7 @@ urlpatterns = urlpatterns + router.urls
 
 # ------permissions路由------
 router = DefaultRouter()
-router.register('permission/perms', permission.PermissionsView, basename='permissions')
+router.register('permission/perms', permission.PermissionsView,
+                basename='permissions')
 # print(router.urls)
 urlpatterns = urlpatterns + router.urls

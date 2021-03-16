@@ -12,6 +12,7 @@ License: None
 
 from rest_framework import serializers
 from django.contrib.auth.models import Permission
+from  django.contrib.contenttypes.models import ContentType
 
 
 class PermissionsSerializer(serializers.ModelSerializer):
@@ -21,3 +22,14 @@ class PermissionsSerializer(serializers.ModelSerializer):
 
         model = Permission
         fields = "__all__"
+
+
+class ContentTypeSerializer(serializers.ModelSerializer):
+    """权限类型序列化器"""
+
+    name = serializers.CharField()
+
+    class Meta:
+
+        model = ContentType
+        fields = ('id', 'name')
