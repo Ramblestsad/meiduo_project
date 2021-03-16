@@ -15,7 +15,7 @@ from django.urls import re_path
 from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework.routers import DefaultRouter
 
-from .views import statistical, users, specs, images, skus, orders
+from .views import statistical, users, specs, images, skus, orders, permission
 
 
 urlpatterns = [
@@ -75,5 +75,11 @@ urlpatterns = urlpatterns + router.urls
 # ------orders路由------
 router = DefaultRouter()
 router.register('orders', orders.OrderView, basename='orders')
+# print(router.urls)
+urlpatterns = urlpatterns + router.urls
+
+# ------permissions路由------
+router = DefaultRouter()
+router.register('permission/perms', permission.PermissionsView, basename='permissions')
 # print(router.urls)
 urlpatterns = urlpatterns + router.urls
