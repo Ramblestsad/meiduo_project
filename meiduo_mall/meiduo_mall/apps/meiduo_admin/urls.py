@@ -15,7 +15,7 @@ from django.urls import re_path
 from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework.routers import DefaultRouter
 
-from .views import statistical, users, specs, images, skus, orders, permission
+from .views import statistical, users, specs, images, skus, orders, permission, groups
 
 
 urlpatterns = [
@@ -57,6 +57,10 @@ urlpatterns = [
     # --------permissions路由--------
     re_path(r'^permission/content_types/$',
             permission.PermissionsView.as_view({'get': 'content_type'})),
+
+    # --------group查询permissi路由--------
+    re_path(r'^permission/simple/$',
+            groups.GroupsView.as_view({'get': 'simple'})),
 ]
 
 # ------规格表路由------
@@ -87,5 +91,12 @@ urlpatterns = urlpatterns + router.urls
 router = DefaultRouter()
 router.register('permission/perms', permission.PermissionsView,
                 basename='permissions')
+# print(router.urls)
+urlpatterns = urlpatterns + router.urls
+
+# ------groups路由------
+router = DefaultRouter()
+router.register('permission/groups', groups.GroupsView,
+                basename='groups')
 # print(router.urls)
 urlpatterns = urlpatterns + router.urls
