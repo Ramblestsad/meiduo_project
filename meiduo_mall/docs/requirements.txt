@@ -46,7 +46,6 @@ drf-extensions==0.7.0
 drf-haystack==1.8.9
 elasticsearch==2.4.1
 et-xmlfile==1.0.1
-fdfs-client-py==1.2.6
 Flask
 future==0.18.2
 hjutils==0.4.1
