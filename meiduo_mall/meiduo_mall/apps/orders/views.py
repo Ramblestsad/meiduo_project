@@ -120,7 +120,7 @@ class UserOrderInfoView(LoginRequiredMixin, View):
             return http.HttpResponseForbidden('page_num参数有误')
 
         # 查询订单
-        orders = user.orderinfo_set.all().order_by("-create_time")
+        orders = user.orders.all().order_by("-create_time")
 
         # 遍历所有订单
         for order in orders:
