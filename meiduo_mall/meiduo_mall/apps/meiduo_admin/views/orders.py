@@ -24,7 +24,7 @@ class OrderView(ReadOnlyModelViewSet):
     """查询/修改订单"""
 
     permission_classes = [IsAdminUser]
-    queryset = OrderInfo.objects.all().order_by('id')
+    queryset = OrderInfo.objects.all()
     pagination_class = PageNum
     serializer_class = OrderSerializer
 

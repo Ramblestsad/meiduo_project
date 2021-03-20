@@ -18,6 +18,7 @@ click-plugins==1.1.1
 click-repl
 colorama
 constantly==15.1.0
+configparser
 coreapi==2.3.3
 coreschema==0.0.4
 cryptography
