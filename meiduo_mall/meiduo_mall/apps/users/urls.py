@@ -5,8 +5,8 @@
 '''
 Author: Chris W.
 Date: 2020-12-23 17:15:15
-LastEditTime: 2021-02-07 19:07:12
-LastEditors: Chris W.
+LastEditTime: 2021-03-28 20:35:23
+LastEditors: Please set LastEditors
 Description: None
 Version: 1.0
 License: MIT License
@@ -19,7 +19,7 @@ from . import views
 
 urlpatterns = [
     # 用户注册
-    re_path(r'^register$', views.RegisterView.as_view(), name='register'),
+    re_path(r'^register/$', views.RegisterView.as_view(), name='register'),
     # 判断用户名是否重复注册
     re_path(r'^usernames/(?P<username>[a-zA-Z0-9_-]{5,20})/count',
             views.UsernameCountView.as_view(), name='ucount'),
