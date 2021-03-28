@@ -133,9 +133,9 @@ DATABASES = {
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '127.0.0.1',
+        'HOST': '172.16.109.2',
         'PORT': 3306,
-        'USER': 'root',
+        'USER': 'chris',
         'PASSWORD': 'Wyl5161696!',
         'NAME': 'meiduo',
     },
@@ -154,21 +154,21 @@ DATABASES = {
 CACHES = {
     "default": {  # default db 0
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/0",
+        "LOCATION": "redis://172.16.109.2:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "session": {  # session store in db 1
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": "redis://172.16.109.2:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "verify_code": {  # verify code store in db 2
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/2",
+        "LOCATION": "redis://172.16.109.2:6379/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -182,14 +182,14 @@ CACHES = {
     # },
     "history": {  # 用户浏览记录
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/3",
+        "LOCATION": "redis://172.16.109.2:6379/3",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "carts": {  # 购物车
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/4",
+        "LOCATION": "redis://172.16.109.2:6379/4",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -295,7 +295,7 @@ LOGIN_URL = '/login/'
 # QQ Login settings params
 QQ_CLIENT_ID = '101518219'
 QQ_CLIENT_SECRET = '418d84ebdc7241efb79536886ae95224'
-QQ_REDIRECT_URI = 'http://127.0.0.1:8000/oauth_callback'
+QQ_REDIRECT_URI = 'http://172.16.109.2:8000/oauth_callback'
 
 # 配置邮件服务器
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # 指定邮件后端
@@ -305,7 +305,7 @@ EMAIL_HOST_USER = 'hmmeiduo@163.com'  # 授权的邮箱
 EMAIL_HOST_PASSWORD = 'hmmeiduo123'  # 邮箱授权时获得的密码，非注册登录密码
 EMAIL_FROM = '美多商城<hmmeiduo@163.com>'  # 发件人抬头
 # 邮箱验证链接
-EMAIL_VERIFY_URL = 'http://127.0.0.1:8000/emails/verification/'
+EMAIL_VERIFY_URL = 'http://172.16.109.2:8000/emails/verification/'
 
 # 指定自定义的Django文件存储类
 DEFAULT_FILE_STORAGE = 'meiduo_mall.utils.fastdfs.fdfs_storage.FastDFSStorage'
@@ -332,7 +332,7 @@ HAYSTACK_SEARCH_RESULTS_PER_PAGE = 5
 ALIPAY_APPID = "2021000117610712"
 ALIPAY_DEBUG = True
 ALIPAY_URL = "https://openapi.alipaydev.com/gateway.do"
-ALIPAY_RETURN_URL = "http://127.0.0.1:8000/payment/status/"
+ALIPAY_RETURN_URL = "http://172.16.109.2:8000/payment/status/"
 
 # 定时器配置
 CRONJOBS = [
@@ -345,6 +345,10 @@ CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
 
 # CORS 解决跨域问题
 CORS_ORIGIN_WHITELIST = (
+    'http://172.16.109.2:80',
+    'http://172.16.109.2:8080',
+    'http://172.16.109.2:8001',
+    'http://172.16.109.2:8000',
     'http://127.0.0.1:8080',
     'http://127.0.0.1:8000',
     'http://localhost:8080',
