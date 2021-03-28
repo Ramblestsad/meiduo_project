@@ -5,7 +5,11 @@
 '''
 Author: Chris W.
 Date: 2020-12-23 17:15:15
+<<<<<<< HEAD
 LastEditTime: 2021-03-28 20:35:23
+=======
+LastEditTime: 2021-03-28 20:50:16
+>>>>>>> 5227ee5c94bf9da0a83a48ae21d045f35c58eada
 LastEditors: Please set LastEditors
 Description: None
 Version: 1.0
